@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.example.centry",
+      "package_name": "website.centry.app",
       "sha256_cert_fingerprints": [
-        "7E:0C:5A:D4:3A:9C:52:00:0C:E0:44:DB:89:97:7C:DE:48:EC:0D:A4:0A:64:B9:3D:18:08:54:5F:8D:37:7F:05"
+        "1A:DF:3C:85:01:D3:66:F4:7C:A9:8E:27:43:44:A4:01:BC:DC:55:FD:3B:55:CB:8A:F7:52:B7:0B:87:77:88:22"
       ]
     }
   }

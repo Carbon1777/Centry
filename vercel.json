@@ -1,8 +1,24 @@
 {
-  "routes": [
+  "headers": [
     {
-      "src": "^/invite/.*$",
-      "dest": "/invite.html"
+      "source": "/.well-known/apple-app-site-association",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/plan-invite",
+      "destination": "/invite.html"
+    },
+    {
+      "source": "/plan-invite/:path*",
+      "destination": "/invite.html"
+    },
+    {
+      "source": "/invite/:path*",
+      "destination": "/invite.html"
     }
   ]
 }

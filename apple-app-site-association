@@ -3,8 +3,8 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAMID.com.example.centro",
-        "paths": [ "invite/*" ]
+        "appID": "WVC52Q5669.com.centry.mobile.app",
+        "paths": ["/plan-invite", "/plan-invite/*"]
       }
     ]
   }
