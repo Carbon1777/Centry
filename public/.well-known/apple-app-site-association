@@ -1,10 +1,12 @@
 {
   "applinks": {
-    "apps": [],
     "details": [
       {
-        "appID": "WVC52Q5669.com.centry.mobile.app",
-        "paths": ["/plan-invite", "/plan-invite/*"]
+        "appIDs": ["WVC52Q5669.com.centry.mobile.app"],
+        "components": [
+          { "/": "/plan-invite" },
+          { "/": "/plan-invite/*" }
+        ]
       }
     ]
   }
