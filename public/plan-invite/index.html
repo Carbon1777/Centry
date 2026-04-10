@@ -1,46 +1,256 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Centry — приглашение в план</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <script>
-      (function () {
-        var params = new URLSearchParams(window.location.search);
-        var token = params.get('token') || params.get('plan_invite_token') || params.get('invite_token');
-        if (!token) return;
-        var deepLink = 'centry://plan-invite?token=' + encodeURIComponent(token);
-        window.location.href = deepLink;
-      })();
-    </script>
-    <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; background: #0b0f14; color: #e8eef6; }
-      .card { max-width: 560px; margin: 0 auto; padding: 20px; border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; background: rgba(255,255,255,0.04); }
-      h1 { font-size: 18px; margin: 0 0 12px; }
-      p { margin: 0 0 12px; line-height: 1.45; color: rgba(232,238,246,0.85); }
-      code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 8px; }
-      .muted { font-size: 13px; color: rgba(232,238,246,0.6); }
-      .btn { display: inline-block; margin-top: 8px; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); color: #e8eef6; text-decoration: none; }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>Приглашение в план</h1>
-      <p>Если приложение Centry установлено — оно откроется автоматически.</p>
-      <p class="muted">
-        Токен: <code id="token">—</code>
-      </p>
-      <a class="btn" href="https://www.centry.website/">На главную</a>
-      <p class="muted" style="margin-top:12px;">
-        Если приложение не установлено — установите его и откройте ссылку снова.
-      </p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Centry — Приглашение в план</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b0f14;
+      color: #e8eef6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      text-decoration: none;
+    }
+    .logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+    .logo span {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e8eef6;
+      letter-spacing: -0.3px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 32px 28px;
+      text-align: center;
+    }
+
+    .invite-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(91,141,255,0.15);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: rgba(232,238,246,0.55);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+      margin-bottom: 10px;
+    }
+    .btn:active { opacity: 0.7; }
+    .btn:last-child { margin-bottom: 0; }
+
+    .btn-primary {
+      background: #fff;
+      color: #0b0f14;
+    }
+
+    .btn-store {
+      background: transparent;
+      color: rgba(232,238,246,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .stores { display: none; margin-top: 10px; }
+    .stores.visible { display: block; }
+
+    .divider {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0 6px;
+      color: rgba(232,238,246,0.25);
+      font-size: 12px;
+    }
+    .divider.visible { display: flex; }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .copied {
+      display: none;
+      font-size: 12px;
+      color: #4ade80;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .copied.visible { display: block; }
+
+    .hint {
+      display: none;
+      font-size: 12px;
+      color: rgba(232,238,246,0.35);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .hint.visible { display: block; }
+
+    .footer-link {
+      margin-top: 32px;
+      font-size: 13px;
+      color: rgba(232,238,246,0.3);
+      text-decoration: none;
+    }
+    .footer-link:hover { color: rgba(232,238,246,0.55); }
+  </style>
+</head>
+<body>
+
+  <a class="logo" href="https://www.centry.website/">
+    <img src="/assets/images/centry_logo.png" alt="Centry">
+    <span>Centry</span>
+  </a>
+
+  <div class="card">
+    <div class="invite-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B8DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
     </div>
 
-    <script>
-      const p = new URLSearchParams(window.location.search);
-      const token = p.get("token") || p.get("plan_invite_token") || p.get("invite_token") || "";
-      document.getElementById("token").textContent = token || "—";
-    </script>
-  </body>
+    <h1>Приглашение в план</h1>
+    <p class="subtitle">Вас пригласили присоединиться к плану в Centry</p>
+
+    <a id="open-btn" class="btn btn-primary" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      Открыть в приложении
+    </a>
+
+    <div id="divider" class="divider">или скачайте</div>
+
+    <div id="stores" class="stores">
+      <a id="link-appstore" class="btn btn-store" href="https://apps.apple.com/app/id6761648930" style="display:none;">
+        <svg width="15" height="18" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5c0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-62.1 24-72.5-24 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        App Store
+      </a>
+      <a id="link-google" class="btn btn-store" href="https://play.google.com/store/apps/details?id=com.centry.mobile.app" style="display:none;">
+        <svg width="15" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+        Google Play
+      </a>
+      <a id="link-rustore" class="btn btn-store" href="https://apps.rustore.ru/app/com.centry.mobile.app" style="display:none;">
+        <svg width="15" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+        RuStore
+      </a>
+    </div>
+
+    <div id="copied" class="copied">Ссылка скопирована — после установки приложение автоматически подхватит приглашение</div>
+    <div id="hint" class="hint">После установки просто откройте Centry — приглашение найдётся автоматически</div>
+  </div>
+
+  <a class="footer-link" href="https://www.centry.website/">centry.website</a>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('token') || params.get('plan_invite_token') || params.get('invite_token') || '';
+
+      var deepLink = 'centry://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '');
+      var fullUrl = window.location.href;
+
+      document.getElementById('open-btn').href = deepLink;
+
+      // Копируем URL в clipboard (deferred deep link — подхватывается при первом запуске после установки)
+      if (token && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullUrl).then(function () {
+          document.getElementById('copied').classList.add('visible');
+        }).catch(function () {});
+      }
+
+      // Определяем платформу → показываем кнопки нужного стора
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isAndroid = /Android/i.test(ua);
+      var storesDiv = document.getElementById('stores');
+      var divider = document.getElementById('divider');
+
+      if (isIOS) {
+        document.getElementById('link-appstore').style.display = '';
+        storesDiv.classList.add('visible');
+        divider.classList.add('visible');
+      } else if (isAndroid) {
+        document.getElementById('link-google').style.display = '';
+        document.getElementById('link-rustore').style.display = '';
+        storesDiv.classList.add('visible');
+        divider.classList.add('visible');
+      }
+
+      if (storesDiv.classList.contains('visible')) {
+        document.getElementById('hint').classList.add('visible');
+      }
+
+      // Пробуем открыть приложение сразу
+      if (token) window.location.href = deepLink;
+    })();
+  </script>
+
+</body>
 </html>
