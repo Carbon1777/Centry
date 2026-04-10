@@ -31,10 +31,18 @@
       margin-bottom: 32px;
       text-decoration: none;
     }
-    .logo img {
+    .logo-icon {
       width: 36px;
       height: 36px;
       border-radius: 10px;
+      background: linear-gradient(135deg, #5B8DFF, #8B5CF6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
     }
     .logo span {
       font-size: 20px;
@@ -176,7 +184,7 @@
 <body>
 
   <a class="logo" href="https://www.centry.website/">
-    <img src="/centry_logo.png" alt="Centry">
+    <div class="logo-icon">C</div>
     <span>Centry</span>
   </a>
 
@@ -202,6 +210,11 @@
       Открыть в приложении
     </a>
 
+    <div id="not-installed" class="not-installed">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Приложение не установлено — выберите магазин ниже
+    </div>
+
     <div id="divider" class="divider">или скачайте</div>
 
     <div id="stores" class="stores">
@@ -219,10 +232,6 @@
       </a>
     </div>
 
-    <div id="not-installed" class="not-installed">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Приложение не установлено — выберите магазин ниже
-    </div>
     <div id="copied" class="copied">Ссылка скопирована — после установки приложение автоматически подхватит приглашение</div>
     <div id="hint" class="hint">После установки просто откройте Centry — приглашение найдётся автоматически</div>
   </div>
