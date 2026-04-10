@@ -239,15 +239,8 @@
       var isAndroid = /Android/i.test(ua);
       var fullUrl = window.location.href;
 
-      // iOS: custom scheme, Android: intent:// (надёжно открывает установленное приложение)
-      var deepLink;
-      if (isAndroid) {
-        var fallback = encodeURIComponent('https://play.google.com/store/apps/details?id=website.centry.app');
-        deepLink = 'intent://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '')
-          + '#Intent;scheme=centry;package=website.centry.app;S.browser_fallback_url=' + fallback + ';end';
-      } else {
-        deepLink = 'centry://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '');
-      }
+      // Единый custom scheme для всех платформ — браузер не делает авто-редирект в стор
+      var deepLink = 'centry://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '');
 
       var openBtn = document.getElementById('open-btn');
       openBtn.href = deepLink;
