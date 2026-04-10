@@ -159,7 +159,7 @@
 <body>
 
   <a class="logo" href="https://www.centry.website/">
-    <img src="/assets/images/centry_logo.png" alt="Centry">
+    <img src="/centry_logo.png" alt="Centry">
     <span>Centry</span>
   </a>
 
@@ -213,8 +213,20 @@
       var params = new URLSearchParams(window.location.search);
       var token = params.get('token') || params.get('plan_invite_token') || params.get('invite_token') || '';
 
-      var deepLink = 'centry://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '');
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isAndroid = /Android/i.test(ua);
       var fullUrl = window.location.href;
+
+      // iOS: custom scheme, Android: intent:// (надёжно открывает установленное приложение)
+      var deepLink;
+      if (isAndroid) {
+        var fallback = encodeURIComponent('https://play.google.com/store/apps/details?id=website.centry.app');
+        deepLink = 'intent://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '')
+          + '#Intent;scheme=centry;package=website.centry.app;S.browser_fallback_url=' + fallback + ';end';
+      } else {
+        deepLink = 'centry://plan-invite' + (token ? '?token=' + encodeURIComponent(token) : '');
+      }
 
       document.getElementById('open-btn').href = deepLink;
 
@@ -225,10 +237,7 @@
         }).catch(function () {});
       }
 
-      // Определяем платформу → показываем кнопки нужного стора
-      var ua = navigator.userAgent || '';
-      var isIOS = /iPhone|iPad|iPod/i.test(ua);
-      var isAndroid = /Android/i.test(ua);
+      // Показываем кнопки нужного стора
       var storesDiv = document.getElementById('stores');
       var divider = document.getElementById('divider');
 
@@ -247,7 +256,7 @@
         document.getElementById('hint').classList.add('visible');
       }
 
-      // Пробуем открыть приложение сразу
+      // Пробуем открыть приложение сразу при загрузке
       if (token) window.location.href = deepLink;
     })();
   </script>
