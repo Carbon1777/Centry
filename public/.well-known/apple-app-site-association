@@ -5,7 +5,9 @@
         "appIDs": ["WVC52Q5669.com.centry.mobile.app"],
         "components": [
           { "/": "/plan-invite" },
-          { "/": "/plan-invite/*" }
+          { "/": "/plan-invite/*" },
+          { "/": "/auth-callback" },
+          { "/": "/auth-callback/*" }
         ]
       }
     ]
